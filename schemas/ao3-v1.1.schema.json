@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AJDev1701/av3-ao3-codec/schema/ao3-v1.1.json",
+  "title": "AO3 Payload Schema v1.1",
+  "description": "Multi-node M2M coordination payload for the Universal Swarm Collaborative",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "record_type",
+    "origin",
+    "routing",
+    "privacy"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "ao3/1.1",
+      "description": "Schema version identifier"
+    },
+    "record_type": {
+      "type": "string",
+      "enum": ["state_sync", "overwatch", "ratification", "tasking", "rollover"],
+      "description": "Payload classification"
+    },
+    "origin": {
+      "type": "object",
+      "required": ["node_id", "role"],
+      "properties": {
+        "node_id": { "type": "string" },
+        "role": { "type": "string" },
+        "device": { "type": "string" }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "required": ["recipients"],
+      "properties": {
+        "recipients": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "excluded": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "acknowledged_by": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "rainbow_chain": {
+      "type": "object",
+      "required": ["origin_node"],
+      "properties": {
+        "origin_node": { "type": "string" },
+        "ack_nodes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "excluded": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "chain_status": {
+          "type": "string",
+          "enum": ["open", "closed", "partial"]
+        }
+      }
+    },
+    "repository_state": {
+      "type": "object",
+      "properties": {
+        "main_commit": { "type": "string" },
+        "freeze_commit": { "type": "string" },
+        "release_tag": { "type": "string" },
+        "harness_anchor": { "type": "string" }
+      }
+    },
+    "claim_status": {
+      "type": "object",
+      "properties": {
+        "verified": { "type": "array", "items": { "type": "string" } },
+        "proposed": { "type": "array", "items": { "type": "string" } },
+        "hypothesis": { "type": "array", "items": { "type": "string" } },
+        "metaphor": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "artifacts": { "type": "array", "items": { "type": "string" } },
+        "hashes": { "type": "array", "items": { "type": "string" } },
+        "ci_runs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "required": ["contains_sensitive_data", "classification", "export_allowed"],
+      "properties": {
+        "contains_sensitive_data": {
+          "type": "boolean",
+          "description": "True if payload contains sensitive or private PII data"
+        },
+        "classification": {
+          "type": "string",
+          "enum": ["private_local_context", "internal_shared", "public_safe"]
+        },
+        "export_allowed": { "type": "boolean" },
+        "redaction_required": { "type": "boolean" },
+        "excluded_fields": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["GREEN", "BLUE", "PURPLE", "YELLOW", "RED"]
+      }
+    },
+    "timestamp_utc": { "type": "string", "format": "date-time" },
+    "action": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "privacy": {
+            "properties": { "contains_sensitive_data": { "const": true } }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "privacy": {
+            "properties": { "export_allowed": { "const": false } }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "privacy": {
+            "properties": { "classification": { "const": "public_safe" } }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "privacy": {
+            "properties": {
+              "contains_sensitive_data": { "const": false },
+              "export_allowed": { "const": true }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "_comment": "VALIDATION_FAILURE_FIXTURE: public_safe must not contain sensitive data",
+  "schema_version": "ao3/1.1",
+  "record_type": "state_sync",
+  "origin": {
+    "node_id": "0x01",
+    "role": "Lead Verifier"
+  },
+  "routing": {
+    "recipients": ["AJX"]
+  },
+  "privacy": {
+    "contains_sensitive_data": true,
+    "classification": "public_safe",
+    "export_allowed": false
+  },
+  "timestamp_utc": "2026-09-21T07:20:00Z",
+  "action": "VALIDATION_FAILURE_EXAMPLE"
+}

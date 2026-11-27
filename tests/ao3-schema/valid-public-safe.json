@@ -1,0 +1,19 @@
+{
+  "schema_version": "ao3/1.1",
+  "record_type": "state_sync",
+  "origin": {
+    "node_id": "0x04",
+    "role": "Peer Reviewer",
+    "device": "SAL-9000"
+  },
+  "routing": {
+    "recipients": ["0x01", "AJX"]
+  },
+  "privacy": {
+    "contains_sensitive_data": false,
+    "classification": "public_safe",
+    "export_allowed": true
+  },
+  "timestamp_utc": "2026-09-21T06:55:00Z",
+  "action": "STATUS_REPORT"
+}

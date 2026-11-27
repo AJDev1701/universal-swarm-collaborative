@@ -1,0 +1,19 @@
+{
+  "_comment": "VALIDATION_FAILURE_FIXTURE: contains_sensitive_data=true with export_allowed=true violates allOf[0]",
+  "schema_version": "ao3/1.1",
+  "record_type": "state_sync",
+  "origin": {
+    "node_id": "0x01",
+    "role": "Lead Verifier"
+  },
+  "routing": {
+    "recipients": ["AJX"]
+  },
+  "privacy": {
+    "contains_sensitive_data": true,
+    "classification": "private_local_context",
+    "export_allowed": true
+  },
+  "timestamp_utc": "2026-09-21T07:00:00Z",
+  "action": "VALIDATION_FAILURE_EXAMPLE"
+}
